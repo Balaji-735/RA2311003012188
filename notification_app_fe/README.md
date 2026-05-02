@@ -1,70 +1,77 @@
-# Getting Started with Create React App
+# Campus Notification Frontend
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+This is my frontend submission for the campus hiring evaluation. The app gets a token from the evaluation service, fetches campus notifications, sorts the important ones by priority, and displays everything in a small React dashboard.
 
-## Available Scripts
+I kept the project simple on purpose: React, vanilla CSS, separate API files, reusable components, and a logging middleware as required.
 
-In the project directory, you can run:
+## What It Does
 
-### `npm start`
+- Authenticates with the protected API
+- Sends frontend logs through the logging middleware
+- Fetches notifications using the bearer token
+- Sorts top notifications using this priority:
+  - Placement
+  - Result
+  - Event
+- Shows notification cards with type, message, timestamp, and new/seen status
+- Supports filtering by notification type
+- Supports previous/next pagination
+- Shows a top priority notifications section
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+## Folder Structure
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+```text
+RA2311003012188/
+├── logging_middleware/
+│   └── logger.js
+├── notification_app_fe/
+│   └── src/
+│       ├── api/
+│       ├── components/
+│       ├── pages/
+│       ├── utils/
+│       ├── App.js
+│       └── index.js
+├── notification_system_design.md
+└── .gitignore
+```
 
-### `npm test`
+## Main Files
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+- `src/api/auth.js` handles token generation
+- `src/api/notifications.js` handles notification API calls
+- `src/logging_middleware/logger.js` sends logs from the frontend
+- `src/utils/priority.js` contains the top notification sorting logic
+- `src/pages/Dashboard.jsx` connects the API, state, filters, pagination, and UI
+- `src/components/NotificationCard.jsx` displays one notification
+- `src/components/FilterBar.jsx` handles notification type filters
+- `src/components/Pagination.jsx` handles page navigation
 
-### `npm run build`
+## Running The Project
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+From the frontend folder:
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+```bash
+npm install
+npm start
+```
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+The app runs at:
 
-### `npm run eject`
+```text
+http://localhost:3000
+```
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+## Build Check
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+I tested the production build with:
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+```bash
+npm run build
+```
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+The build completed successfully.
 
-## Learn More
+## Notes
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+The API is protected, so all notification and logging calls depend on a valid auth token. For local development, the React dev proxy is used to avoid browser CORS issues while still calling the evaluation service.
